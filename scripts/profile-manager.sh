@@ -13,7 +13,7 @@ ACTION="${1:-list}"
 shift || true
 
 if [[ "$(get_state "setup_complete")" != "true" ]]; then
-  err "Config sync not set up yet. Run /cb:setup first."
+  err "Config sync not set up yet. Run /claudebase:setup first."
   exit 1
 fi
 
@@ -110,7 +110,7 @@ case "$ACTION" in
     cd - >/dev/null
 
     ok "Profile '${NAME}' created."
-    echo -e "Switch to it: ${BOLD}/cb:profiles switch ${NAME}${NC}"
+    echo -e "Switch to it: ${BOLD}/claudebase:profiles switch ${NAME}${NC}"
     ;;
 
   delete)

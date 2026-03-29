@@ -24,7 +24,7 @@ done
 
 # ── Preflight (early-exit before any network/tool calls) ───────────
 if [[ "$(get_state "setup_complete")" != "true" ]]; then
-  $AUTO || err "Config sync not set up yet. Run /cb:setup first."
+  $AUTO || err "Config sync not set up yet. Run /claudebase:setup first."
   exit $( $AUTO && echo 0 || echo 1 )
 fi
 
@@ -134,11 +134,36 @@ copy_if_exists "${PROJECT_DIR}/.claude/agent-memory" \
 copy_if_exists "${PROJECT_DIR}/.auto-memory" \
   "${PROFILE_DIR}/memory" ".auto-memory/"
 
+# Agent skills (Vercel/agentskills.io) — opt-in
+if [[ "$(get_state "sync_agent_skills")" == "true" ]]; then
+  copy_if_exists "${PROJECT_DIR}/skills-lock.json" \
+    "${PROFILE_DIR}/skills-lock.json" "skills-lock.json"
+fi
+
 # User-scoped (global) files — opt-in only
 if $INCLUDE_GLOBAL; then
   info "Collecting global config from: ${CLAUDE_HOME}"
   copy_if_exists "${CLAUDE_HOME}/settings.json" \
     "${GLOBAL_DIR}/settings.json" "~/.claude/settings.json"
+fi
+
+# ── Detect agent skills (offer opt-in) ─────────────────────────────
+if [[ -f "${PROJECT_DIR}/skills-lock.json" ]] && [[ "$(get_state "sync_agent_skills")" != "true" ]] && [[ "$(get_state "sync_agent_skills")" != "declined" ]]; then
+  if ! $AUTO; then
+    info "Detected ${BOLD}skills-lock.json${NC} (Vercel/agentskills.io skills)."
+    echo -n "[claudebase] Sync agent skills across machines? [y/N] "
+    read -r ENABLE_SKILLS
+    if [[ "$ENABLE_SKILLS" =~ ^[Yy]$ ]]; then
+      set_state "sync_agent_skills" "true"
+      ok "Agent skills sync enabled."
+      # Now copy the lock file
+      copy_if_exists "${PROJECT_DIR}/skills-lock.json" \
+        "${PROFILE_DIR}/skills-lock.json" "skills-lock.json"
+    else
+      set_state "sync_agent_skills" "declined"
+      info "Skipped. Enable later by running: set sync_agent_skills=true in state.json"
+    fi
+  fi
 fi
 
 # ── Check for actual changes ────────────────────────────────────────

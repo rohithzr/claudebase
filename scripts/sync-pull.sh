@@ -26,7 +26,7 @@ PROFILE=$(get_profile "$PROFILE")
 
 # ── Preflight ───────────────────────────────────────────────────────
 if [[ "$(get_state "setup_complete")" != "true" ]]; then
-  err "Config sync not set up yet. Run /cb:setup first."
+  err "Config sync not set up yet. Run /claudebase:setup first."
   exit 1
 fi
 
@@ -66,6 +66,7 @@ if ! $NO_BACKUP && ! $DRY_RUN; then
   [[ -f "${PROJECT_DIR}/.mcp.json" ]] && cp "${PROJECT_DIR}/.mcp.json" "${BACKUP_PATH}/" 2>/dev/null || true
   [[ -d "${PROJECT_DIR}/.claude" ]] && cp -r "${PROJECT_DIR}/.claude" "${BACKUP_PATH}/dot-claude" 2>/dev/null || true
   [[ -d "${PROJECT_DIR}/.auto-memory" ]] && cp -r "${PROJECT_DIR}/.auto-memory" "${BACKUP_PATH}/auto-memory" 2>/dev/null || true
+  [[ -f "${PROJECT_DIR}/skills-lock.json" ]] && cp "${PROJECT_DIR}/skills-lock.json" "${BACKUP_PATH}/skills-lock.json" 2>/dev/null || true
   [[ -f "${CLAUDE_HOME}/settings.json" ]] && cp "${CLAUDE_HOME}/settings.json" "${BACKUP_PATH}/global-settings.json" 2>/dev/null || true
 
   ok "Backup created: ${BACKUP_NAME}"
@@ -104,6 +105,11 @@ if ! $DRY_RUN && ! $YES; then
     preview_file "${SHARED_DIR}/skills" "${PROJECT_DIR}/.claude/skills" "shared/skills/"
     preview_file "${SHARED_DIR}/rules" "${PROJECT_DIR}/.claude/rules" "shared/rules/"
     preview_file "${SHARED_DIR}/agents" "${PROJECT_DIR}/.claude/agents" "shared/agents/"
+  fi
+
+  # Preview agent skills
+  if [[ "$(get_state "sync_agent_skills")" == "true" ]]; then
+    preview_file "${PROFILE_DIR}/skills-lock.json" "${PROJECT_DIR}/skills-lock.json" "skills-lock.json"
   fi
 
   # Preview profile
@@ -227,7 +233,38 @@ apply_file "${PROFILE_DIR}/agent-memory" \
 apply_file "${PROFILE_DIR}/memory" \
   "${PROJECT_DIR}/.auto-memory" ".auto-memory/"
 
-# Step 3: Apply global (user-level) config — opt-in only
+# Step 3: Apply agent skills lock file and re-fetch — opt-in only
+if [[ "$(get_state "sync_agent_skills")" == "true" ]]; then
+  apply_file "${PROFILE_DIR}/skills-lock.json" \
+    "${PROJECT_DIR}/skills-lock.json" "skills-lock.json"
+
+  # Re-fetch skills from lock file using npx skills add
+  if ! $DRY_RUN && [[ -f "${PROJECT_DIR}/skills-lock.json" ]]; then
+    if command -v npx &>/dev/null; then
+      info "Re-fetching agent skills from skills-lock.json..."
+      SKILL_SOURCES=$(jq -r '.skills | to_entries[] | .value.source' "${PROJECT_DIR}/skills-lock.json" 2>/dev/null || true)
+      SKILL_ERRORS=0
+      while IFS= read -r source; do
+        [[ -z "$source" ]] && continue
+        info "  Installing skill: ${source}"
+        if ! npx skills add "$source" 2>/dev/null; then
+          warn "  Failed to install skill from: ${source}"
+          SKILL_ERRORS=$((SKILL_ERRORS + 1))
+        fi
+      done <<< "$SKILL_SOURCES"
+      if [[ $SKILL_ERRORS -gt 0 ]]; then
+        warn "${SKILL_ERRORS} skill(s) failed to install. Run 'npx skills add <source>' manually."
+      else
+        ok "Agent skills re-fetched successfully."
+      fi
+    else
+      warn "npx not found — skipping agent skills install. Install Node.js to enable this."
+      warn "You can manually run: npx skills add <source> for each skill in skills-lock.json"
+    fi
+  fi
+fi
+
+# Step 4: Apply global (user-level) config — opt-in only
 if $INCLUDE_GLOBAL && [[ -d "$GLOBAL_DIR" ]]; then
   info "Applying global config..."
   apply_file "${GLOBAL_DIR}/settings.json" \

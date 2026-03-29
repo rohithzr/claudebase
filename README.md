@@ -34,13 +34,13 @@ claude --plugin-dir ./claudebase
 ## Quick Start
 
 ```
-/cb:setup                    # One-time: create repo + first push
-/cb:push                     # Push current config to GitHub
-/cb:pull                     # Pull config from GitHub
-/cb:status                   # Compare local vs remote
-/cb:profiles list            # List all profiles
-/cb:profiles create work     # Create a new profile
-/cb:profiles switch work     # Switch to a different profile
+/claudebase:setup                # One-time: create repo + first push
+/claudebase:push                 # Push current config to GitHub
+/claudebase:pull                 # Pull config from GitHub
+/claudebase:status               # Compare local vs remote
+/claudebase:profiles list        # List all profiles
+/claudebase:profiles create work # Create a new profile
+/claudebase:profiles switch work # Switch to a different profile
 ```
 
 ## How it works
