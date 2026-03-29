@@ -1,0 +1,23 @@
+# Spec document (internal reference only)
+claudebase-spec.md
+claude-config-sync-spec.md
+
+# TODO tracking (internal)
+TODO.md
+
+# Local manifest override
+.sync-manifest.local.json
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor files
+*.swp
+*.swo
+*~
+.vscode/
+.idea/
+
+# Node (if applicable)
+node_modules/
