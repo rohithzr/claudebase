@@ -30,8 +30,8 @@ The script shows each tracked file/directory with a status:
 ### Recommendations
 
 Based on the output, suggest the appropriate action:
-- Local-only files → suggest `/cb:push`
-- Remote-only files → suggest `/cb:pull`
+- Local-only files → suggest `/claudebase:push`
+- Remote-only files → suggest `/claudebase:pull`
 - Modified files → suggest checking what changed, then push or pull
 
 ## User Arguments

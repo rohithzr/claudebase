@@ -47,7 +47,7 @@ Run the first push automatically:
 bash "${CLAUDE_PLUGIN_ROOT}/scripts/sync-push.sh" --profile PROFILE_NAME
 ```
 
-Tell the user what was synced and how to use `/cb:push` and `/cb:pull` going forward.
+Tell the user what was synced and how to use `/claudebase:push` and `/claudebase:pull` going forward.
 
 ## User Arguments
 

@@ -6,7 +6,7 @@ All notable changes to Claudebase will be documented in this file.
 
 ### Added
 - Initial release as **claudebase** (renamed from config-sync)
-- 5 skills: `/cb:setup`, `/cb:push`, `/cb:pull`, `/cb:status`, `/cb:profiles`
+- 5 skills: `/claudebase:setup`, `/claudebase:push`, `/claudebase:pull`, `/claudebase:status`, `/claudebase:profiles`
 - Profile management: list, create, delete, info, switch, diff
 - Shared config layer applied before profile overlay
 - Secret scanning with configurable patterns

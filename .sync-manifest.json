@@ -38,6 +38,14 @@
         ".auto-memory/"
       ],
       "exclude": []
+    },
+    "agent_skills": {
+      "_comment": "Vercel/agentskills.io skills. Syncs lock file only; re-fetches on pull via npx skills add. Opt-in.",
+      "include": [
+        "skills-lock.json"
+      ],
+      "exclude": [],
+      "opt_in": true
     }
   },
   "never_sync": [

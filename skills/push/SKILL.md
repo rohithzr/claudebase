@@ -38,7 +38,7 @@ bash "${CLAUDE_PLUGIN_ROOT}/scripts/sync-push.sh" [OPTIONS]
 
 ### Multi-machine warning
 
-If the script warns about another machine having pushed more recently, advise the user to pull first (`/cb:pull`) or use `--force` if they're sure.
+If the script warns about another machine having pushed more recently, advise the user to pull first (`/claudebase:pull`) or use `--force` if they're sure.
 
 ### Secret detection
 
