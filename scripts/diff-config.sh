@@ -101,7 +101,6 @@ if ! $QUIET; then
   echo ""
 fi
 
-compare_file "${PROJECT_DIR}/CLAUDE.md" "${PROFILE_DIR}/CLAUDE.md" "CLAUDE.md"
 compare_file "${PROJECT_DIR}/.mcp.json" "${PROFILE_DIR}/mcp.json" ".mcp.json"
 compare_file "${PROJECT_DIR}/.claude/settings.json" "${PROFILE_DIR}/settings.json" ".claude/settings.json"
 compare_file "${PROJECT_DIR}/.claude/agents" "${PROFILE_DIR}/agents" ".claude/agents/"

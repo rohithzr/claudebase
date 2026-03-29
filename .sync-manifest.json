@@ -6,7 +6,6 @@
     "project": {
       "_comment": "Project-scoped files (per-repo config)",
       "include": [
-        "CLAUDE.md",
         ".mcp.json",
         ".claude/settings.json",
         ".claude/agents/",

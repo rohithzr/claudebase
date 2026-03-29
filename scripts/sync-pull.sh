@@ -101,14 +101,12 @@ if ! $DRY_RUN && ! $YES; then
 
   # Preview shared
   if [[ -d "${SHARED_DIR:-/dev/null}" ]]; then
-    preview_file "${SHARED_DIR}/CLAUDE.md" "${PROJECT_DIR}/CLAUDE.md" "shared/CLAUDE.md"
     preview_file "${SHARED_DIR}/skills" "${PROJECT_DIR}/.claude/skills" "shared/skills/"
     preview_file "${SHARED_DIR}/rules" "${PROJECT_DIR}/.claude/rules" "shared/rules/"
     preview_file "${SHARED_DIR}/agents" "${PROJECT_DIR}/.claude/agents" "shared/agents/"
   fi
 
   # Preview profile
-  preview_file "${PROFILE_DIR}/CLAUDE.md" "${PROJECT_DIR}/CLAUDE.md" "CLAUDE.md"
   preview_file "${PROFILE_DIR}/mcp.json" "${PROJECT_DIR}/.mcp.json" ".mcp.json"
   preview_file "${PROFILE_DIR}/settings.json" "${PROJECT_DIR}/.claude/settings.json" ".claude/settings.json"
   preview_file "${PROFILE_DIR}/agents" "${PROJECT_DIR}/.claude/agents" ".claude/agents/"
@@ -180,9 +178,6 @@ apply_file() {
 if [[ -d "$SHARED_DIR" ]]; then
   info "Applying shared config..."
 
-  apply_file "${SHARED_DIR}/CLAUDE.md" \
-    "${PROJECT_DIR}/CLAUDE.md" "shared/CLAUDE.md"
-
   apply_file "${SHARED_DIR}/skills" \
     "${PROJECT_DIR}/.claude/skills" "shared/skills/"
 
@@ -195,9 +190,6 @@ fi
 
 # Step 2: Apply profile files (overlay on top of shared)
 info "Applying profile '${PROFILE}' config..."
-
-apply_file "${PROFILE_DIR}/CLAUDE.md" \
-  "${PROJECT_DIR}/CLAUDE.md" "CLAUDE.md"
 
 apply_file "${PROFILE_DIR}/mcp.json" \
   "${PROJECT_DIR}/.mcp.json" ".mcp.json"

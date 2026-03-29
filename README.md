@@ -4,7 +4,6 @@ A Claude Code plugin that backs up and restores your complete Claude Code enviro
 
 ## What it syncs
 
-- `CLAUDE.md` — project instructions
 - `.mcp.json` — MCP server configurations
 - `.claude/settings.json` — team-shared settings
 - `.claude/agents/` — subagent definitions

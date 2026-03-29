@@ -97,9 +97,6 @@ copy_if_exists() {
 # Project-scoped files
 info "Collecting project config from: ${PROJECT_DIR}"
 
-copy_if_exists "${PROJECT_DIR}/CLAUDE.md" \
-  "${PROFILE_DIR}/CLAUDE.md" "CLAUDE.md"
-
 copy_if_exists "${PROJECT_DIR}/.mcp.json" \
   "${PROFILE_DIR}/mcp.json" ".mcp.json"
 

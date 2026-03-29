@@ -13,14 +13,14 @@ Push your current local Claude Code configuration to the GitHub backup repo.
 ## What gets pushed
 
 All syncable files from the current project and global config:
-- `CLAUDE.md`, `.mcp.json`, `.claude/settings.json`
+- `.mcp.json`, `.claude/settings.json`
 - `.claude/agents/`, `.claude/commands/`, `.claude/skills/`
 - `.claude/hooks/` (scripts, config, sounds)
 - `.claude/rules/`, `.claude/agent-memory/`
 - `.auto-memory/` (memory files)
-- `~/.claude/settings.json` (global settings)
+- `~/.claude/settings.json` (global settings, opt-in via `--include-global`)
 
-Files that are **never** pushed: `settings.local.json`, `hooks-config.local.json`, conversations, sessions.
+Files that are **never** pushed: `CLAUDE.md` (version-controlled with project), `settings.local.json`, `hooks-config.local.json`, conversations, sessions.
 
 ## Instructions
 
