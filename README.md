@@ -38,6 +38,7 @@ claude --plugin-dir ./claudebase
 /claudebase:push                 # Push current config to GitHub
 /claudebase:pull                 # Pull config from GitHub
 /claudebase:status               # Compare local vs remote
+/claudebase:config               # View/change sync settings
 /claudebase:profiles list        # List all profiles
 /claudebase:profiles create work # Create a new profile
 /claudebase:profiles switch work # Switch to a different profile
