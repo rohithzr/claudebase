@@ -163,6 +163,7 @@ scan_for_secrets() {
   patterns=$(get_manifest_value '.secret_patterns[]')
 
   while IFS= read -r pattern; do
+    pattern="${pattern%$'\r'}"  # Strip trailing CR (Windows/CRLF compat)
     [[ -z "$pattern" ]] && continue
     if grep -qE -- "$pattern" "$file" 2>/dev/null; then
       warn "Potential secret detected in: $file"
