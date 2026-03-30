@@ -7,7 +7,7 @@ on:
     branches: [main]
 
 jobs:
-  test:
+  test-macos:
     runs-on: macos-latest
     strategy:
       matrix:
@@ -42,20 +42,117 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: test-results-${{ matrix.suite }}
+          name: test-results-macos-${{ matrix.suite }}
+          path: tests/results/
+          retention-days: 7
+          if-no-files-found: ignore
+
+  test-linux:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        suite: [unit, integration, e2e]
+      fail-fast: false
+
+    steps:
+      - name: Checkout with submodules
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Install jq
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq jq
+          jq --version
+
+      - name: Configure git for tests
+        run: |
+          git config --global user.email "test@test.com"
+          git config --global user.name "Test User"
+          git config --global init.defaultBranch main
+
+      - name: Run ${{ matrix.suite }} tests
+        run: |
+          chmod +x tests/bats/bin/bats
+          ./tests/bats/bin/bats --timing --print-output-on-failure tests/${{ matrix.suite }}/
+        env:
+          TERM: xterm
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results-linux-${{ matrix.suite }}
+          path: tests/results/
+          retention-days: 7
+          if-no-files-found: ignore
+
+  test-windows:
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        suite: [unit, integration, e2e]
+      fail-fast: false
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+      - name: Checkout with submodules
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Install jq
+        run: |
+          curl -sL https://github.com/jqlang/jq/releases/download/jq-1.7.1/jq-windows-amd64.exe -o /usr/bin/jq.exe
+          jq --version
+
+      - name: Configure git for tests
+        run: |
+          git config --global user.email "test@test.com"
+          git config --global user.name "Test User"
+          git config --global init.defaultBranch main
+          git config --global core.autocrlf false
+
+      - name: Run ${{ matrix.suite }} tests
+        run: |
+          ./tests/bats/bin/bats --timing --print-output-on-failure tests/${{ matrix.suite }}/
+        env:
+          TERM: xterm
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results-windows-${{ matrix.suite }}
           path: tests/results/
           retention-days: 7
           if-no-files-found: ignore
 
   all-pass:
-    needs: test
+    needs: [test-macos, test-linux, test-windows]
     runs-on: ubuntu-latest
     if: always()
     steps:
       - name: Check all test suites passed
         run: |
-          if [[ "${{ needs.test.result }}" != "success" ]]; then
-            echo "::error::One or more test suites failed"
+          MACOS="${{ needs.test-macos.result }}"
+          LINUX="${{ needs.test-linux.result }}"
+          WINDOWS="${{ needs.test-windows.result }}"
+          echo "macOS:   ${MACOS}"
+          echo "Linux:   ${LINUX}"
+          echo "Windows: ${WINDOWS}"
+          if [[ "$MACOS" != "success" ]]; then
+            echo "::error::macOS tests failed"
             exit 1
           fi
-          echo "All test suites passed!"
+          if [[ "$LINUX" != "success" ]]; then
+            echo "::error::Linux tests failed"
+            exit 1
+          fi
+          if [[ "$WINDOWS" != "success" ]]; then
+            echo "::warning::Windows tests failed (non-blocking)"
+          fi
+          echo "All required test suites passed!"
