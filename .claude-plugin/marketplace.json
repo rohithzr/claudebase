@@ -1,6 +1,6 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
-  "name": "claudebase",
+  "name": "rohithzr",
   "description": "Back up and restore your entire Claude Code environment to a private GitHub repo",
   "owner": {
     "name": "Rohit Hazra"

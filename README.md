@@ -25,10 +25,11 @@ Machine-specific files (`settings.local.json`, `hooks-config.local.json`, conver
 ## Installation
 
 ```bash
-# Test locally during development
-claude --plugin-dir ./claudebase
+# Install from marketplace
+claude plugin add rohithzr/claudebase
 
-# Or add to your Claude Code settings
+# Or test locally during development
+claude --plugin-dir ./claudebase
 ```
 
 ## Quick Start
