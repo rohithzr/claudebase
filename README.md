@@ -2,34 +2,62 @@
 
 A Claude Code plugin that backs up and restores your complete Claude Code environment to a private GitHub repository.
 
-## What it syncs
-
-- `.mcp.json` — MCP server configurations
-- `.claude/settings.json` — team-shared settings
-- `.claude/agents/` — subagent definitions
-- `.claude/commands/` — slash command templates
-- `.claude/skills/` — reusable knowledge modules
-- `.claude/hooks/` — lifecycle hooks (scripts, config, sounds)
-- `.claude/rules/` — organization rules
-- `.claude/agent-memory/` — persistent agent memory
-- `.auto-memory/` — auto-memory files
-- `~/.claude/settings.json` — global user settings (opt-in via `--include-global`)
-
-Machine-specific files (`settings.local.json`, `hooks-config.local.json`, conversations, sessions) are **never** synced.
-
 ## Requirements
 
-- [GitHub CLI (`gh`)](https://cli.github.com/) installed and authenticated
-- `git`, `jq`, `bash`
+- [GitHub CLI (`gh`)](https://cli.github.com/) — authenticated (`gh auth login`)
+- [`jq`](https://jqlang.github.io/jq/) — JSON processor
+- [`git`](https://git-scm.com/) — version control
+- `bash` — shell (included on macOS/Linux; via Git Bash on Windows)
+
+<details>
+<summary>Installation instructions (macOS / Linux / Windows)</summary>
+
+### macOS
+
+```bash
+brew install gh jq git
+gh auth login
+```
+
+### Linux (Debian/Ubuntu)
+
+```bash
+# GitHub CLI
+(type -p wget >/dev/null || sudo apt-get install wget -y) \
+  && sudo mkdir -p -m 755 /etc/apt/keyrings \
+  && out=$(mktemp) && wget -nv -O$out https://cli.github.com/packages/githubcli-archive-keyring.gpg \
+  && cat $out | sudo tee /etc/apt/keyrings/githubcli-archive-keyring.gpg > /dev/null \
+  && sudo chmod go+r /etc/apt/keyrings/githubcli-archive-keyring.gpg \
+  && echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null \
+  && sudo apt update \
+  && sudo apt install gh -y
+
+# jq and git
+sudo apt-get install -y jq git
+
+gh auth login
+```
+
+### Windows
+
+Install [Git for Windows](https://git-scm.com/download/win) (includes Git Bash), then in PowerShell:
+
+```powershell
+winget install GitHub.cli
+winget install jqlang.jq
+gh auth login
+```
+
+</details>
 
 ## Installation
 
 ```bash
-# Install from marketplace
-claude plugin add rohithzr/claudebase
+# Step 1: Add the marketplace
+claude plugin marketplace add rohithzr/claudebase
 
-# Or test locally during development
-claude --plugin-dir ./claudebase
+# Step 2: Install the plugin
+claude plugin install claudebase@rohithzr
 ```
 
 ## Quick Start
@@ -44,6 +72,21 @@ claude --plugin-dir ./claudebase
 /claudebase:profiles create work # Create a new profile
 /claudebase:profiles switch work # Switch to a different profile
 ```
+
+## What it syncs
+
+- `.mcp.json` — MCP server configurations
+- `.claude/settings.json` — team-shared settings
+- `.claude/agents/` — subagent definitions
+- `.claude/commands/` — slash command templates
+- `.claude/skills/` — reusable knowledge modules
+- `.claude/hooks/` — lifecycle hooks (scripts, config, sounds)
+- `.claude/rules/` — organization rules
+- `.claude/agent-memory/` — persistent agent memory
+- `.auto-memory/` — auto-memory files
+- `~/.claude/settings.json` — global user settings (opt-in via `--include-global`)
+
+Machine-specific files (`settings.local.json`, `hooks-config.local.json`, conversations, sessions) are **never** synced.
 
 ## How it works
 
