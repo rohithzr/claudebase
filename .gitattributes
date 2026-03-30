@@ -1,0 +1,11 @@
+# Force LF line endings for all shell scripts and test fixtures
+# This prevents Windows CRLF from breaking grep pattern matching
+*.sh text eol=lf
+*.bash text eol=lf
+*.bats text eol=lf
+*.json text eol=lf
+*.txt text eol=lf
+*.md text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.cmd text eol=lf

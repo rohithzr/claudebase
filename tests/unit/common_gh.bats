@@ -19,9 +19,17 @@ teardown() {
 }
 
 @test "check_gh fails when gh not installed" {
-  # Remove mock gh and restrict PATH to only have system essentials (no real gh)
+  # Remove mock gh and create a clean PATH with only basic tools (no real gh)
   rm -f "${MOCK_BIN}/gh"
-  PATH="${MOCK_BIN}:/usr/bin:/bin" run check_gh
+  local clean_bin="${TEST_TEMP}/clean_bin"
+  mkdir -p "$clean_bin"
+  # Symlink only the essentials needed by check_gh (command builtin handles the check)
+  for cmd in bash jq; do
+    local real_path
+    real_path=$(command -v "$cmd" 2>/dev/null || true)
+    [[ -n "$real_path" ]] && ln -sf "$real_path" "${clean_bin}/"
+  done
+  PATH="${clean_bin}" run check_gh
   [ "$status" -eq 1 ]
   [[ "$output" == *"not installed"* ]]
 }
