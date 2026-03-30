@@ -1,0 +1,8 @@
+{
+  "skills": {
+    "my-skill": {
+      "source": "https://example.com/skill",
+      "version": "1.0.0"
+    }
+  }
+}

@@ -1,0 +1,61 @@
+name: Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: macos-latest
+    strategy:
+      matrix:
+        suite: [unit, integration, e2e]
+      fail-fast: false
+
+    steps:
+      - name: Checkout with submodules
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Install jq
+        run: |
+          brew install jq
+          jq --version
+
+      - name: Configure git for tests
+        run: |
+          git config --global user.email "test@test.com"
+          git config --global user.name "Test User"
+          git config --global init.defaultBranch main
+
+      - name: Run ${{ matrix.suite }} tests
+        run: |
+          chmod +x tests/bats/bin/bats
+          ./tests/bats/bin/bats --timing --print-output-on-failure tests/${{ matrix.suite }}/
+        env:
+          TERM: xterm
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results-${{ matrix.suite }}
+          path: tests/results/
+          retention-days: 7
+          if-no-files-found: ignore
+
+  all-pass:
+    needs: test
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - name: Check all test suites passed
+        run: |
+          if [[ "${{ needs.test.result }}" != "success" ]]; then
+            echo "::error::One or more test suites failed"
+            exit 1
+          fi
+          echo "All test suites passed!"

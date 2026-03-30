@@ -1,0 +1,10 @@
+{
+  "setup_complete": "true",
+  "repo_name": "claude-config",
+  "repo_full": "testuser/claude-config",
+  "active_profile": "default",
+  "machine_id": "test-machine",
+  "setup_date": "2026-01-01T00:00:00Z",
+  "last_push": "2026-01-15T10:00:00Z",
+  "last_pull": "2026-01-15T09:00:00Z"
+}

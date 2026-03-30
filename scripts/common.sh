@@ -164,7 +164,7 @@ scan_for_secrets() {
 
   while IFS= read -r pattern; do
     [[ -z "$pattern" ]] && continue
-    if grep -qE "$pattern" "$file" 2>/dev/null; then
+    if grep -qE -- "$pattern" "$file" 2>/dev/null; then
       warn "Potential secret detected in: $file"
       warn "Pattern match: $pattern"
       return 1
