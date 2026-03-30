@@ -94,6 +94,109 @@ claude plugin marketplace remove rohithzr
 /claudebase:profiles switch work # Switch active profile
 ```
 
+## Examples
+
+### First-time setup on a new machine
+
+```
+/claudebase:setup                            # Creates private repo, initializes profile
+/claudebase:push                             # Backs up your current config
+```
+
+### Daily workflow — single machine
+
+```
+/claudebase:status                           # Check if anything changed
+/claudebase:push                             # Save today's changes
+```
+
+### Syncing between two machines
+
+```
+Laptop:  /claudebase:push                    # Push your config
+Desktop: /claudebase:pull                    # Pull it down
+
+Desktop: # ... tweak agents, add rules ...
+
+Desktop: /claudebase:push --force            # Push from second machine
+Laptop:  /claudebase:pull                    # Get desktop's changes
+```
+
+### Setting up work and personal profiles
+
+```
+/claudebase:profiles create work             # New empty profile
+/claudebase:profiles create personal         # Another one
+
+# Push current config to work
+/claudebase:profiles switch work
+/claudebase:push
+
+# Switch to personal, start fresh
+/claudebase:profiles switch personal
+# ... set up personal agents, rules ...
+/claudebase:push
+```
+
+### Switching contexts during the day
+
+```
+/claudebase:profiles switch work             # Pull work config
+# ... deep coding session ...
+
+/claudebase:push                             # Save work state
+/claudebase:profiles switch personal         # Switch to personal
+# ... side project with different agents ...
+
+/claudebase:push                             # Save personal state
+```
+
+### Onboarding a teammate
+
+```
+# You: push your team config to a shared profile
+/claudebase:profiles create team-defaults --from work
+/claudebase:push
+
+# Teammate: on their machine
+/claudebase:setup
+/claudebase:pull --profile team-defaults     # Gets your agents, rules, skills
+```
+
+### Previewing before you commit
+
+```
+/claudebase:push --dry-run                   # See what would be pushed
+/claudebase:pull --dry-run                   # See what would change locally
+/claudebase:profiles diff work personal      # Compare two profiles
+```
+
+### Recovering after a bad change
+
+```
+# Oops, broke your config
+/claudebase:pull                             # Restores from last push
+                                             # Old config saved to backups/
+
+# Backups are at ~/.claude/plugins/data/claudebase/backups/
+```
+
+### Three-machine round-robin
+
+```
+Laptop:   /claudebase:push                   # Push initial config
+
+Desktop:  /claudebase:pull                   # Get laptop's config
+Desktop:  # ... add new agents ...
+Desktop:  /claudebase:push --force           # Push desktop's additions
+
+CI Box:   /claudebase:pull                   # CI gets latest from desktop
+CI Box:   # ... add CI-specific rules ...
+CI Box:   /claudebase:push --force           # Push CI additions
+
+Laptop:   /claudebase:pull                   # Laptop gets everything
+```
+
 ## What it syncs
 
 | Path | Description | Sync behavior |
