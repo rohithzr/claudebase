@@ -1,5 +1,5 @@
 ---
-name: pull
+name: sync-pull
 description: Use when the user wants to restore, download, or pull their Claude Code config from GitHub onto this machine.
 argument-hint: "[--profile NAME] [--dry-run] [--no-backup] [--yes] [--include-global]"
 user-invocable: true

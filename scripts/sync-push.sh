@@ -24,7 +24,7 @@ done
 
 # ── Preflight (early-exit before any network/tool calls) ───────────
 if [[ "$(get_state "setup_complete")" != "true" ]]; then
-  $AUTO || err "Config sync not set up yet. Run /claudebase:setup first."
+  $AUTO || err "Config sync not set up yet. Run /sync-setup first."
   exit $( $AUTO && echo 0 || echo 1 )
 fi
 

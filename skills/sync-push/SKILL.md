@@ -1,5 +1,5 @@
 ---
-name: push
+name: sync-push
 description: Use when the user wants to back up, save, or push their current Claude Code config to GitHub.
 argument-hint: "[--profile NAME] [--force] [--dry-run] [--include-global]"
 user-invocable: true
@@ -38,7 +38,7 @@ bash "${CLAUDE_PLUGIN_ROOT}/scripts/sync-push.sh" [OPTIONS]
 
 ### Multi-machine warning
 
-If the script warns about another machine having pushed more recently, advise the user to pull first (`/claudebase:pull`) or use `--force` if they're sure.
+If the script warns about another machine having pushed more recently, advise the user to pull first (`/sync-pull`) or use `--force` if they're sure.
 
 ### Secret detection
 

@@ -26,7 +26,7 @@ PROFILE=$(get_profile "$PROFILE")
 
 # ── Preflight ───────────────────────────────────────────────────────
 if [[ "$(get_state "setup_complete")" != "true" ]]; then
-  err "Config sync not set up yet. Run /claudebase:setup first."
+  err "Config sync not set up yet. Run /sync-setup first."
   exit 1
 fi
 
