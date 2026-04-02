@@ -126,8 +126,8 @@ if ! $QUIET; then
     [[ $MISSING_REMOTE -gt 0 ]] && echo -e "  ${GREEN}${MISSING_REMOTE}${NC} local-only (not yet pushed)"
     [[ $MISSING_LOCAL -gt 0 ]] && echo -e "  ${CYAN}${MISSING_LOCAL}${NC} remote-only (not yet pulled)"
     echo ""
-    echo -e "  Run ${BOLD}/claudebase:push${NC} to upload local changes"
-    echo -e "  Run ${BOLD}/claudebase:pull${NC} to download remote changes"
+    echo -e "  Run ${BOLD}/sync-push${NC} to upload local changes"
+    echo -e "  Run ${BOLD}/sync-pull${NC} to download remote changes"
   fi
 
   # Show last sync info

@@ -1,5 +1,5 @@
 ---
-name: setup
+name: sync-setup
 description: Use when the user wants to set up config sync for the first time, connect to GitHub, or re-initialize the backup repo.
 argument-hint: "[repo-name] [profile-name]"
 user-invocable: true
@@ -47,7 +47,7 @@ Run the first push automatically:
 bash "${CLAUDE_PLUGIN_ROOT}/scripts/sync-push.sh" --profile PROFILE_NAME
 ```
 
-Tell the user what was synced and how to use `/claudebase:push` and `/claudebase:pull` going forward.
+Tell the user what was synced and show all available commands: `/sync-push`, `/sync-pull`, `/sync-status`, `/sync-profiles`, `/sync-config`.
 
 ## User Arguments
 

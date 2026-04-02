@@ -1,5 +1,5 @@
 ---
-name: config
+name: sync-config
 description: Use when the user wants to view or change claudebase settings like global sync, agent skills sync, auto-push, or machine ID.
 argument-hint: "[show] | [set <key> <value>] | [get <key>] | [reset <key>]"
 user-invocable: true
@@ -36,9 +36,9 @@ bash "${CLAUDE_PLUGIN_ROOT}/scripts/config-manager.sh" ACTION [KEY] [VALUE]
 
 ### Examples
 
-- `/claudebase:config` — show all settings
-- `/claudebase:config set include_global true` — enable global settings sync
-- `/claudebase:config set auto_push false` — disable auto-push
+- `/sync-config` — show all settings
+- `/sync-config set include_global true` — enable global settings sync
+- `/sync-config set auto_push false` — disable auto-push
 
 ## User Arguments
 

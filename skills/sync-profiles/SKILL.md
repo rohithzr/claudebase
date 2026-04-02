@@ -1,5 +1,5 @@
 ---
-name: profiles
+name: sync-profiles
 description: Use when the user wants to list, create, switch, delete, compare, or inspect config sync profiles.
 argument-hint: "<list|create|switch|delete|diff|info> [name] [--from existing]"
 user-invocable: true

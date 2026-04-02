@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/rohithzr/claudebase/actions/workflows/test.yml/badge.svg)](https://github.com/rohithzr/claudebase/actions/workflows/test.yml)
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-0.1.0-green.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-0.2.0-green.svg)](CHANGELOG.md)
 
 Your Claude Code setup is infrastructure. Agents, skills, rules, hooks, memory — these accumulate over weeks of work and represent real investment. Losing them to a disk wipe, or manually recreating them on a new machine, shouldn't happen.
 
@@ -36,13 +36,15 @@ claude plugin marketplace remove rohithzr
 ## Quick Start
 
 ```
-/claudebase:setup          # One-time: create private GitHub repo + first push
-/claudebase:push           # Back up current config
-/claudebase:pull           # Restore config from GitHub
-/claudebase:status         # Compare local vs remote
-/claudebase:profiles list  # Manage named profiles
-/claudebase:config         # View/change settings
+/sync-setup          # One-time: create private GitHub repo + first push
+/sync-push           # Back up current config
+/sync-pull           # Restore config from GitHub
+/sync-status         # Compare local vs remote
+/sync-profiles list  # Manage named profiles
+/sync-config         # View/change settings
 ```
+
+> Type `/sync` to see all commands. Full namespaced form (`/claudebase:sync-push`) also works.
 
 ## Why Not Just Copy the Folder?
 
@@ -60,28 +62,28 @@ claude plugin marketplace remove rohithzr
 ### Sync between machines
 
 ```
-Laptop:  /claudebase:push               # Push your config
-Desktop: /claudebase:pull               # Pull it down
+Laptop:  /sync-push               # Push your config
+Desktop: /sync-pull               # Pull it down
 Desktop: # ... tweak agents, add rules ...
-Desktop: /claudebase:push --force       # Push from second machine
-Laptop:  /claudebase:pull               # Get desktop's changes
+Desktop: /sync-push --force       # Push from second machine
+Laptop:  /sync-pull               # Get desktop's changes
 ```
 
 ### Switch contexts during the day
 
 ```
-/claudebase:profiles switch work        # Load work config
+/sync-profiles switch work        # Load work config
 # ... deep coding session ...
-/claudebase:push                        # Save work state
-/claudebase:profiles switch personal    # Load personal config
+/sync-push                        # Save work state
+/sync-profiles switch personal    # Load personal config
 ```
 
 ### Preview before committing
 
 ```
-/claudebase:push --dry-run              # See what would be pushed
-/claudebase:pull --dry-run              # See what would change locally
-/claudebase:profiles diff work personal # Compare two profiles
+/sync-push --dry-run              # See what would be pushed
+/sync-pull --dry-run              # See what would change locally
+/sync-profiles diff work personal # Compare two profiles
 ```
 
 <details>
@@ -91,28 +93,28 @@ Laptop:  /claudebase:pull               # Get desktop's changes
 
 ```
 # You: push your team config to a shared profile
-/claudebase:profiles create team-defaults --from work
-/claudebase:push
+/sync-profiles create team-defaults --from work
+/sync-push
 
 # Teammate: on their machine
-/claudebase:setup
-/claudebase:pull --profile team-defaults
+/sync-setup
+/sync-pull --profile team-defaults
 ```
 
 ### Recover from a bad change
 
 ```
-/claudebase:pull                        # Restores from last push
+/sync-pull                        # Restores from last push
                                         # Old config saved to backups/
 ```
 
 ### Three-machine round-robin
 
 ```
-Laptop:   /claudebase:push
-Desktop:  /claudebase:pull && /claudebase:push --force
-CI Box:   /claudebase:pull && /claudebase:push --force
-Laptop:   /claudebase:pull              # Gets everything
+Laptop:   /sync-push
+Desktop:  /sync-pull && /sync-push --force
+CI Box:   /sync-pull && /sync-push --force
+Laptop:   /sync-pull              # Gets everything
 ```
 </details>
 
@@ -130,7 +132,7 @@ Laptop:   /claudebase:pull              # Gets everything
 | `.claude/agent-memory/` | Persistent agent memory |
 | `.auto-memory/` | Auto-memory files |
 
-**Opt-in:** Global `~/.claude/settings.json` (`--include-global`), Vercel skills lock (`/claudebase:config set sync_agent_skills true`).
+**Opt-in:** Global `~/.claude/settings.json` (`--include-global`), Vercel skills lock (`/sync-config set sync_agent_skills true`).
 
 **Never synced:** `settings.local.json`, conversations, sessions, shell snapshots, logs.
 
@@ -169,11 +171,11 @@ Push is blocked if a different machine pushed since your last sync — pull firs
 ## Configuration
 
 ```
-/claudebase:config show                      # View all settings
-/claudebase:config set auto_push true        # Auto-push on session end
-/claudebase:config set include_global true   # Always sync global settings
-/claudebase:config set machine_id my-laptop  # Custom machine identifier
-/claudebase:config reset auto_push           # Reset to default
+/sync-config show                      # View all settings
+/sync-config set auto_push true        # Auto-push on session end
+/sync-config set include_global true   # Always sync global settings
+/sync-config set machine_id my-laptop  # Custom machine identifier
+/sync-config reset auto_push           # Reset to default
 ```
 
 Claudebase also registers two lifecycle hooks:

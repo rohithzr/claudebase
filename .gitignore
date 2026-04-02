@@ -1,5 +1,8 @@
 # Project instructions (local only)
 CLAUDE.md
+.claude
+.mcp.json
+skills-lock.json
 
 # Spec document (internal reference only)
 claudebase-spec.md

@@ -11,7 +11,7 @@ shift || true
 case "$ACTION" in
   show)
     if [[ ! -f "$STATE_FILE" ]]; then
-      err "Config sync not set up yet. Run /claudebase:setup first."
+      err "Config sync not set up yet. Run /sync-setup first."
       exit 1
     fi
 

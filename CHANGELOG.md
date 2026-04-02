@@ -2,6 +2,13 @@
 
 All notable changes to Claudebase will be documented in this file.
 
+## [0.2.0] - 2026-04-01
+
+### Changed
+- Renamed skills to sync-prefixed names to avoid collisions with other plugins
+  - `/push` → `/sync-push`, `/pull` → `/sync-pull`, `/setup` → `/sync-setup`
+  - `/status` → `/sync-status`, `/profiles` → `/sync-profiles`, `/config` → `/sync-config`
+
 ## [0.1.0] - 2026-03-28
 
 ### Added
