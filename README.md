@@ -25,6 +25,7 @@ Then restart Claude Code or run `/reload-plugins`.
 
 ```bash
 # Update
+claude plugins marketplace update
 claude plugin update claudebase@rohithzr
 
 # Uninstall
