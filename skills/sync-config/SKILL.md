@@ -3,7 +3,10 @@ name: sync-config
 description: Use when the user wants to view or change claudebase settings like global sync, agent skills sync, auto-push, or machine ID.
 argument-hint: "[show] | [set <key> <value>] | [get <key>] | [reset <key>]"
 user-invocable: true
-allowed-tools: Bash(bash *), Read
+allowed-tools: Bash(bash "${CLAUDE_PLUGIN_ROOT}/scripts/*"), Read
+version: 0.2.0
+author: Rohit Hazra
+license: MIT
 ---
 
 # Config Sync Settings

@@ -238,28 +238,15 @@ if [[ "$(get_state "sync_agent_skills")" == "true" ]]; then
   apply_file "${PROFILE_DIR}/skills-lock.json" \
     "${PROJECT_DIR}/skills-lock.json" "skills-lock.json"
 
-  # Re-fetch skills from lock file using npx skills add
+  # List skills from lock file for manual re-fetch (not auto-executed for security)
   if ! $DRY_RUN && [[ -f "${PROJECT_DIR}/skills-lock.json" ]]; then
-    if command -v npx &>/dev/null; then
-      info "Re-fetching agent skills from skills-lock.json..."
-      SKILL_SOURCES=$(jq -r '.skills | to_entries[] | .value.source' "${PROJECT_DIR}/skills-lock.json" 2>/dev/null || true)
-      SKILL_ERRORS=0
+    SKILL_SOURCES=$(jq -r '.skills | to_entries[] | .value.source' "${PROJECT_DIR}/skills-lock.json" 2>/dev/null || true)
+    if [[ -n "$SKILL_SOURCES" ]]; then
+      info "Agent skills found in skills-lock.json. Install them manually:"
       while IFS= read -r source; do
         [[ -z "$source" ]] && continue
-        info "  Installing skill: ${source}"
-        if ! npx skills add "$source" 2>/dev/null; then
-          warn "  Failed to install skill from: ${source}"
-          SKILL_ERRORS=$((SKILL_ERRORS + 1))
-        fi
+        info "  npx skills add ${source}"
       done <<< "$SKILL_SOURCES"
-      if [[ $SKILL_ERRORS -gt 0 ]]; then
-        warn "${SKILL_ERRORS} skill(s) failed to install. Run 'npx skills add <source>' manually."
-      else
-        ok "Agent skills re-fetched successfully."
-      fi
-    else
-      warn "npx not found — skipping agent skills install. Install Node.js to enable this."
-      warn "You can manually run: npx skills add <source> for each skill in skills-lock.json"
     fi
   fi
 fi

@@ -2,7 +2,10 @@
 name: sync-status
 description: Use when the user wants to check what config has changed, see sync status, or compare local vs remote config.
 user-invocable: true
-allowed-tools: Bash(bash *), Bash(gh *), Bash(git *), Read
+allowed-tools: Bash(bash "${CLAUDE_PLUGIN_ROOT}/scripts/*"), Bash(gh *), Bash(git *), Read
+version: 0.2.0
+author: Rohit Hazra
+license: MIT
 ---
 
 # Config Sync Status

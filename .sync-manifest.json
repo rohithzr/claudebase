@@ -59,9 +59,13 @@
   ],
   "secret_patterns": [
     "sk-[a-zA-Z0-9]{20,}",
+    "sk-ant-[a-zA-Z0-9]{20,}",
     "ghp_[a-zA-Z0-9]{36}",
     "ghs_[a-zA-Z0-9]{36}",
+    "github_pat_[a-zA-Z0-9_]{22,}",
     "AKIA[0-9A-Z]{16}",
+    "xoxb-[0-9A-Za-z\\-]{20,}",
+    "xoxp-[0-9A-Za-z\\-]{20,}",
     "-----BEGIN.*PRIVATE KEY-----",
     "Bearer [a-zA-Z0-9._\\-]{20,}"
   ]

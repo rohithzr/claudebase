@@ -3,7 +3,10 @@ name: sync-profiles
 description: Use when the user wants to list, create, switch, delete, compare, or inspect config sync profiles.
 argument-hint: "<list|create|switch|delete|diff|info> [name] [--from existing]"
 user-invocable: true
-allowed-tools: Bash(bash *), Bash(gh *), Bash(git *), Read
+allowed-tools: Bash(bash "${CLAUDE_PLUGIN_ROOT}/scripts/*"), Bash(gh *), Bash(git *), Read
+version: 0.2.0
+author: Rohit Hazra
+license: MIT
 ---
 
 # Config Sync Profiles

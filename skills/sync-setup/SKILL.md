@@ -3,7 +3,10 @@ name: sync-setup
 description: Use when the user wants to set up config sync for the first time, connect to GitHub, or re-initialize the backup repo.
 argument-hint: "[repo-name] [profile-name]"
 user-invocable: true
-allowed-tools: Bash(gh *), Bash(git *), Bash(bash *), Bash(mkdir *), Bash(cat *), Read, Write
+allowed-tools: Bash(bash "${CLAUDE_PLUGIN_ROOT}/scripts/*"), Bash(gh *), Bash(git *), Read, Write
+version: 0.2.0
+author: Rohit Hazra
+license: MIT
 ---
 
 # Config Sync Setup

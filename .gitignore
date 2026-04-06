@@ -27,3 +27,7 @@ Thumbs.db
 
 # Node (if applicable)
 node_modules/
+
+# Dev-only tooling (not part of the plugin)
+.agents/skills/security-review/
+.claude/agents/security-review.md
