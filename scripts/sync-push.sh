@@ -134,7 +134,7 @@ copy_if_exists "${PROJECT_DIR}/.claude/agent-memory" \
 copy_if_exists "${PROJECT_DIR}/.auto-memory" \
   "${PROFILE_DIR}/memory" ".auto-memory/"
 
-# Agent skills (Vercel/agentskills.io) — opt-in
+# Agent skills lock file — opt-in
 if [[ "$(get_state "sync_agent_skills")" == "true" ]]; then
   copy_if_exists "${PROJECT_DIR}/skills-lock.json" \
     "${PROFILE_DIR}/skills-lock.json" "skills-lock.json"
@@ -150,7 +150,7 @@ fi
 # ── Detect agent skills (offer opt-in) ─────────────────────────────
 if [[ -f "${PROJECT_DIR}/skills-lock.json" ]] && [[ "$(get_state "sync_agent_skills")" != "true" ]] && [[ "$(get_state "sync_agent_skills")" != "declined" ]]; then
   if ! $AUTO; then
-    info "Detected ${BOLD}skills-lock.json${NC} (Vercel/agentskills.io skills)."
+    info "Detected ${BOLD}skills-lock.json${NC} (agent skills lock file)."
     echo -n "[claudebase] Sync agent skills across machines? [y/N] "
     read -r ENABLE_SKILLS
     if [[ "$ENABLE_SKILLS" =~ ^[Yy]$ ]]; then

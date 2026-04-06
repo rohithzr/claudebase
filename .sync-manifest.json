@@ -40,7 +40,7 @@
       "exclude": []
     },
     "agent_skills": {
-      "_comment": "Vercel/agentskills.io skills. Syncs lock file only; re-fetches on pull via npx skills add. Opt-in.",
+      "_comment": "Agent skills lock file. Syncs the file only; prints install commands on pull but does not auto-execute. Opt-in.",
       "include": [
         "skills-lock.json"
       ],

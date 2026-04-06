@@ -233,7 +233,7 @@ apply_file "${PROFILE_DIR}/agent-memory" \
 apply_file "${PROFILE_DIR}/memory" \
   "${PROJECT_DIR}/.auto-memory" ".auto-memory/"
 
-# Step 3: Apply agent skills lock file and re-fetch — opt-in only
+# Step 3: Apply agent skills lock file — opt-in only
 if [[ "$(get_state "sync_agent_skills")" == "true" ]]; then
   apply_file "${PROFILE_DIR}/skills-lock.json" \
     "${PROJECT_DIR}/skills-lock.json" "skills-lock.json"

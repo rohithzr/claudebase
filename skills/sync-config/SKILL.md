@@ -33,7 +33,7 @@ bash "${CLAUDE_PLUGIN_ROOT}/scripts/config-manager.sh" ACTION [KEY] [VALUE]
 | Key | Values | Description |
 |-----|--------|-------------|
 | `include_global` | `true`/`false` | Sync `~/.claude/settings.json` on push/pull |
-| `sync_agent_skills` | `true`/`false` | Sync `skills-lock.json` (Vercel agent skills) |
+| `sync_agent_skills` | `true`/`false` | Sync `skills-lock.json` (lock file only; prints install commands on pull) |
 | `auto_push` | `true`/`false` | Auto-push config when a Claude Code session ends |
 | `machine_id` | any string | Identifier for this machine (used in multi-machine warnings) |
 

@@ -133,7 +133,7 @@ Laptop:   /sync-pull              # Gets everything
 | `.claude/agent-memory/` | Persistent agent memory |
 | `.auto-memory/` | Auto-memory files |
 
-**Opt-in:** Global `~/.claude/settings.json` (`--include-global`), Vercel skills lock (`/sync-config set sync_agent_skills true`).
+**Opt-in:** Global `~/.claude/settings.json` (`--include-global`), `skills-lock.json` (`/claudebase:config set sync_agent_skills true` — syncs the lock file; prints install commands on pull, does not auto-execute).
 
 **Never synced:** `settings.local.json`, conversations, sessions, shell snapshots, logs.
 
