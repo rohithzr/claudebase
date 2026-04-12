@@ -104,14 +104,50 @@ teardown() {
   [ "$output" -ge 1 ]
 }
 
-@test "handles empty repo clone failure gracefully" {
-  # MOCK_GH_REPO_EXISTS=false and no CLONE_SOURCE initialized = clone will fail
-  export MOCK_GH_CLONE_SOURCE=""
-  export MOCK_GH_REPO_EXISTS=false
+@test "initializes empty remote repo via local git init path" {
+  # Remote exists but is empty — gh repo view --json isEmpty returns "true".
+  # ensure-repo.sh should skip `gh repo clone` and fall into the local
+  # `git init + git remote add origin` branch, then push to the bare remote.
+  export MOCK_GH_REPO_EXISTS=true
+  export MOCK_GH_REPO_EMPTY=true
+
+  # Redirect the github URL that ensure-repo.sh will set as origin to the
+  # local bare remote so the push actually lands somewhere.
+  git config --file "$GIT_CONFIG_GLOBAL" \
+    "url.${TEST_BARE}.insteadOf" \
+    "https://github.com/${MOCK_GH_USER}/claude-config.git"
 
   run bash "${SCRIPTS_DIR}/ensure-repo.sh" "claude-config" "default"
-  # Should still succeed via local git init fallback
-  [ "$status" -eq 0 ] || [ "$status" -eq 1 ]
-  # State should be set regardless of push success
-  [ -f "${CLAUDE_PLUGIN_DATA}/state.json" ]
+  [ "$status" -eq 0 ]
+  [[ "$output" == *"Remote repo is empty"* ]]
+  [[ "$output" == *"Setup complete"* ]]
+
+  # Verify setup_complete was set — which means the push succeeded, since
+  # the new code defers that state write until after the push.
+  assert_state_value "${CLAUDE_PLUGIN_DATA}/state.json" "setup_complete" "true"
+
+  # Verify the bare remote actually received the initial commit.
+  run git --git-dir="$TEST_BARE" log --oneline main
+  [ "$status" -eq 0 ]
+  [[ "$output" == *"Initialize claudebase repo"* ]]
+}
+
+@test "exits nonzero with a helpful hint when clone fails" {
+  # Simulate a real clone failure (SSH hostkey, network, auth). The script
+  # must NOT silently fall back to local init, must exit nonzero, must
+  # surface the actionable hint, and must NOT mark setup_complete=true.
+  export MOCK_GH_REPO_EXISTS=true
+  export MOCK_GH_REPO_EMPTY=false
+  export MOCK_GH_CLONE_FAILS=true
+
+  run bash "${SCRIPTS_DIR}/ensure-repo.sh" "claude-config" "default"
+  [ "$status" -ne 0 ]
+  [[ "$output" == *"Failed to clone"* ]]
+  [[ "$output" == *"ssh -T git@github.com"* ]]
+
+  # setup_complete must remain unset — the whole point of the fix.
+  if [[ -f "${CLAUDE_PLUGIN_DATA}/state.json" ]]; then
+    run jq -r '.setup_complete // "unset"' "${CLAUDE_PLUGIN_DATA}/state.json"
+    [ "$output" != "true" ]
+  fi
 }
