@@ -79,6 +79,19 @@ get_gh_user() {
   gh api user -q '.login' 2>/dev/null
 }
 
+# Return the git remote URL for a repo, honoring gh's configured git protocol
+# (ssh or https). Falls back to https when unset.
+get_remote_url() {
+  local repo_full="$1"
+  local proto
+  proto=$(gh config get -h github.com git_protocol 2>/dev/null || echo "")
+  if [[ "$proto" == "ssh" ]]; then
+    echo "git@github.com:${repo_full}.git"
+  else
+    echo "https://github.com/${repo_full}.git"
+  fi
+}
+
 get_repo_name() {
   local configured
   configured=$(get_state "repo_name" "")
@@ -133,9 +146,10 @@ ensure_local_repo() {
     git pull --rebase --quiet 2>/dev/null || true
     cd - >/dev/null
   else
-    # Clone the repo
+    # Clone the repo. Let stderr surface so real failures (auth, hostkey,
+    # network) are visible instead of being mistaken for "empty repo".
     rm -rf "$repo_path"
-    gh repo clone "$repo_full" "$repo_path" -- --quiet --depth 1 2>/dev/null
+    gh repo clone "$repo_full" "$repo_path" -- --quiet --depth 1
   fi
 }
 

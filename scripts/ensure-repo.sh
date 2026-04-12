@@ -24,33 +24,49 @@ else
   ok "Created repo ${REPO_FULL}"
 fi
 
-# Save state
+# Save identifying state now. setup_complete is deferred until after the
+# first successful push, so a half-finished setup isn't mistaken for a
+# working one by later sync commands.
 set_state "repo_name" "$REPO_NAME"
 set_state "repo_full" "$REPO_FULL"
 set_state "active_profile" "$PROFILE"
-set_state "setup_complete" "true"
 set_state "setup_date" "$(now_iso)"
 
 # Clone/update local copy
 info "Syncing local repo copy..."
 REPO_PATH=$(get_local_repo_path)
+REMOTE_URL=$(get_remote_url "$REPO_FULL")
 
 if [[ -d "${REPO_PATH}/.git" ]]; then
   cd "$REPO_PATH"
-  git remote set-url origin "https://github.com/${REPO_FULL}.git" 2>/dev/null || true
+  git remote set-url origin "$REMOTE_URL" 2>/dev/null || true
   git pull --rebase --quiet 2>/dev/null || true
   cd - >/dev/null
 else
   rm -rf "$REPO_PATH"
-  if gh repo clone "$REPO_FULL" "$REPO_PATH" -- --quiet 2>/dev/null; then
-    : # clone succeeded
-  else
-    # Empty repo — initialize locally
+  # Distinguish "empty repo" from real failures (auth, SSH hostkey, network).
+  # gh repo view exposes isEmpty; use it to decide whether to init locally.
+  IS_EMPTY=$(gh repo view "$REPO_FULL" --json isEmpty -q '.isEmpty' 2>/dev/null || echo "")
+  if [[ "$IS_EMPTY" == "true" ]]; then
+    info "Remote repo is empty — initializing locally."
     mkdir -p "$REPO_PATH"
     cd "$REPO_PATH"
     git init --quiet
-    git remote add origin "https://github.com/${REPO_FULL}.git"
+    git remote add origin "$REMOTE_URL"
     cd - >/dev/null
+  else
+    # Non-empty (or unknown): clone it, and let stderr surface real errors.
+    # gh repo clone already uses the configured git protocol, so we don't
+    # need to rewrite the remote URL afterwards.
+    if ! gh repo clone "$REPO_FULL" "$REPO_PATH" -- --quiet; then
+      err "Failed to clone ${REPO_FULL}."
+      err "Common causes: SSH hostkey not trusted, expired auth, network, or repo permissions."
+      err "Try one of:"
+      err "  ssh -T git@github.com                              # verify SSH hostkey"
+      err "  gh auth status                                      # check auth"
+      err "  gh config set -h github.com git_protocol https      # switch to HTTPS"
+      exit 1
+    fi
   fi
 fi
 
@@ -105,14 +121,16 @@ hooks-config.local.json
 .DS_Store
 GIEOF
 
-  # Commit and push
+  # Commit and push. If the push fails, bail out *without* marking setup
+  # complete so the user can re-run after fixing auth/network.
   git add -A
   git commit -m "Initialize claudebase repo with profile: ${PROFILE}" --quiet
   git branch -M main
-  git push -u origin main --quiet 2>/dev/null || {
-    # If push fails, try setting up remote
-    git push --set-upstream origin main --quiet
-  }
+  if ! git push -u origin main --quiet; then
+    err "Failed to push initial commit to ${REPO_FULL}."
+    err "Fix the underlying git auth issue and re-run setup."
+    exit 1
+  fi
 
   ok "Repo initialized with profile: ${PROFILE}"
 else
@@ -120,6 +138,9 @@ else
 fi
 
 cd - >/dev/null
+
+# Only now is setup truly complete — remote is reachable and has content.
+set_state "setup_complete" "true"
 
 ok "Setup complete!"
 echo ""
