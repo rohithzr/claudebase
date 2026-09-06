@@ -2,6 +2,14 @@
 
 All notable changes to Claudebase will be documented in this file.
 
+## [Unreleased]
+
+### Fixed
+- `sync-push --dry-run` no longer copies files into the local repo working tree. The copy ran before the dry-run check, so leftovers from a dry-run were silently committed by the next real push, including a push to a different profile. Dry-run now compares each source against the repo copy and reports `Would sync` or `Unchanged` per item, still runs the secret scan, and exits before touching git.
+
+### Tests
+- Added `dry-run leaves the repo working tree untouched` and `dry-run reports unchanged items after a real push` to `tests/integration/sync_push.bats`.
+
 ## [0.2.1] - 2026-04-12
 
 ### Fixed
