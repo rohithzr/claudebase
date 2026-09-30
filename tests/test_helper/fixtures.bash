@@ -38,6 +38,14 @@ create_state_file() {
 EOF
 }
 
+# Turn on auto_push in an existing state file
+enable_auto_push() {
+  local dir="$1"
+  local tmp
+  tmp=$(mktemp)
+  jq '.auto_push = "true"' "${dir}/state.json" > "$tmp" && mv "$tmp" "${dir}/state.json"
+}
+
 # Create a local bare git repo to act as "remote"
 create_bare_remote() {
   local path="$1"

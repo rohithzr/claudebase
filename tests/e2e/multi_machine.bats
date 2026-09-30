@@ -138,6 +138,7 @@ teardown() {
   run_as_machine "desktop" sync-pull.sh --yes --no-backup >/dev/null 2>&1
   echo '{"change":true}' > "${desktop_project}/.mcp.json"
 
+  enable_auto_push "${TEST_TEMP}/machines/desktop/plugin_data"
   run run_as_machine "desktop" sync-push.sh --auto
   [ "$status" -eq 0 ]
   [[ "$output" == *"Skipping"* ]]

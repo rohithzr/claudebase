@@ -28,6 +28,11 @@ if [[ "$(get_state "setup_complete")" != "true" ]]; then
   exit $( $AUTO && echo 0 || echo 1 )
 fi
 
+# SessionEnd hook runs with --auto; only push when the user opted in
+if $AUTO && [[ "$(get_state "auto_push" "false")" != "true" ]]; then
+  exit 0
+fi
+
 PROFILE=$(get_profile "$PROFILE")
 
 if ! check_jq; then exit 1; fi
