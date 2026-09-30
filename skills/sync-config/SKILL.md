@@ -4,7 +4,7 @@ description: Use when the user wants to view or change claudebase settings like 
 argument-hint: "[show] | [set <key> <value>] | [get <key>] | [reset <key>]"
 user-invocable: true
 allowed-tools: Bash(bash ${CLAUDE_PLUGIN_ROOT}/scripts/config-manager.sh *), Read
-version: 0.2.3
+version: 0.2.4
 author: Rohit Hazra
 license: MIT
 ---
