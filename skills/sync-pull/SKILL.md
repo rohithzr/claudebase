@@ -3,8 +3,8 @@ name: sync-pull
 description: Use when the user wants to restore, download, or pull their Claude Code config from GitHub onto this machine.
 argument-hint: "[--profile NAME] [--dry-run] [--no-backup] [--yes] [--include-global]"
 user-invocable: true
-allowed-tools: Bash(bash "${CLAUDE_PLUGIN_ROOT}/scripts/*"), Bash(gh *), Bash(git *), Read
-version: 0.2.2
+allowed-tools: Bash(bash ${CLAUDE_PLUGIN_ROOT}/scripts/sync-pull.sh *), Read
+version: 0.2.3
 author: Rohit Hazra
 license: MIT
 ---
@@ -26,7 +26,7 @@ Pull configuration from your GitHub backup repo and apply it to the local machin
 Parse user arguments and run the pull script:
 
 ```bash
-bash "${CLAUDE_PLUGIN_ROOT}/scripts/sync-pull.sh" [OPTIONS]
+bash ${CLAUDE_PLUGIN_ROOT}/scripts/sync-pull.sh [OPTIONS]
 ```
 
 **Options:**
