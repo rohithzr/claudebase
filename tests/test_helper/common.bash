@@ -48,7 +48,3 @@ common_teardown() {
     rm -rf "$TEST_TEMP"
   fi
 }
-
-# Load bats-support and bats-assert
-load "$(cd "${BATS_TEST_DIRNAME}/../test_helper/bats-support" && pwd)/load.bash"
-load "$(cd "${BATS_TEST_DIRNAME}/../test_helper/bats-assert" && pwd)/load.bash"

@@ -7,7 +7,7 @@ Thanks for your interest in contributing! This guide covers everything you need 
 ```bash
 git clone https://github.com/rohithzr/claudebase.git
 cd claudebase
-git submodule update --init --recursive
+git clone --depth 1 --branch v1.13.0 https://github.com/bats-core/bats-core.git tests/bats
 ```
 
 ### Running locally
@@ -24,7 +24,7 @@ claude --plugin-dir ./
 - `gh` CLI (authenticated) — GitHub operations
 - `git` — version control
 - `jq` — JSON manipulation
-- [BATS](https://github.com/bats-core/bats-core) — test framework (included as submodule)
+- [BATS](https://github.com/bats-core/bats-core) — test framework (cloned into `tests/bats/`, which is gitignored)
 
 ## Project Structure
 
@@ -50,13 +50,13 @@ Each skill lives in `skills/<name>/SKILL.md`. Key conventions:
 ## Running Tests
 
 ```bash
-# All 158 tests
+# All tests
 ./tests/bats/bin/bats tests/
 
 # By suite
-./tests/bats/bin/bats tests/unit/          # 57 unit tests
-./tests/bats/bin/bats tests/integration/   # 72 integration tests
-./tests/bats/bin/bats tests/e2e/           # 29 E2E tests
+./tests/bats/bin/bats tests/unit/
+./tests/bats/bin/bats tests/integration/
+./tests/bats/bin/bats tests/e2e/
 ```
 
 ### Test architecture

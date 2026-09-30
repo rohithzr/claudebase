@@ -126,6 +126,29 @@ teardown() {
   [ "$status" -eq 0 ]
 }
 
+@test "auto mode does not push when auto_push is off" {
+  local before after
+  before=$(git --git-dir="$TEST_BARE" rev-list --all --count)
+
+  run bash "${SCRIPTS_DIR}/sync-push.sh" --auto
+  [ "$status" -eq 0 ]
+
+  after=$(git --git-dir="$TEST_BARE" rev-list --all --count)
+  [ "$after" -eq "$before" ]
+}
+
+@test "auto mode pushes when auto_push is enabled" {
+  enable_auto_push "$CLAUDE_PLUGIN_DATA"
+  local before after
+  before=$(git --git-dir="$TEST_BARE" rev-list --all --count)
+
+  run bash "${SCRIPTS_DIR}/sync-push.sh" --auto
+  [ "$status" -eq 0 ]
+
+  after=$(git --git-dir="$TEST_BARE" rev-list --all --count)
+  [ "$after" -gt "$before" ]
+}
+
 @test "detects no changes and exits cleanly" {
   # Push once
   bash "${SCRIPTS_DIR}/sync-push.sh" >/dev/null 2>&1
@@ -161,6 +184,7 @@ teardown() {
 }
 
 @test "multi-machine conflict skipped in auto mode" {
+  enable_auto_push "$CLAUDE_PLUGIN_DATA"
   local meta="${CLAUDE_PLUGIN_DATA}/repo/.sync-meta.json"
   local tmp
   tmp=$(mktemp)

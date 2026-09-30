@@ -15,10 +15,11 @@ jobs:
       fail-fast: false
 
     steps:
-      - name: Checkout with submodules
+      - name: Checkout
         uses: actions/checkout@v4
-        with:
-          submodules: recursive
+
+      - name: Install bats
+        run: git clone --depth 1 --branch v1.13.0 https://github.com/bats-core/bats-core.git tests/bats
 
       - name: Install jq
         run: |
@@ -55,10 +56,11 @@ jobs:
       fail-fast: false
 
     steps:
-      - name: Checkout with submodules
+      - name: Checkout
         uses: actions/checkout@v4
-        with:
-          submodules: recursive
+
+      - name: Install bats
+        run: git clone --depth 1 --branch v1.13.0 https://github.com/bats-core/bats-core.git tests/bats
 
       - name: Install jq
         run: |
@@ -104,14 +106,15 @@ jobs:
           git config --global core.autocrlf false
           git config --global core.eol lf
 
-      - name: Checkout with submodules
+      - name: Checkout
         uses: actions/checkout@v4
-        with:
-          submodules: recursive
+
+      - name: Install bats
+        run: git clone --depth 1 --branch v1.13.0 https://github.com/bats-core/bats-core.git tests/bats
 
       - name: Install jq
         run: |
-          curl -sL https://github.com/jqlang/jq/releases/download/jq-1.7.1/jq-windows-amd64.exe -o /usr/bin/jq.exe
+          command -v jq || choco install jq -y --no-progress
           jq --version
 
       - name: Configure git for tests

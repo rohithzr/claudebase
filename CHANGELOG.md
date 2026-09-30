@@ -2,13 +2,22 @@
 
 All notable changes to Claudebase will be documented in this file.
 
-## [Unreleased]
+## [0.2.2] - 2026-09-30
 
 ### Fixed
+- The `SessionEnd` hook now honors `auto_push`. `sync-push.sh --auto` previously ignored the setting and pushed on every session end once setup was complete, even though `auto_push` defaults to `false`.
 - `sync-push --dry-run` no longer copies files into the local repo working tree. The copy ran before the dry-run check, so leftovers from a dry-run were silently committed by the next real push, including a push to a different profile. Dry-run now compares each source against the repo copy and reports `Would sync` or `Unchanged` per item, still runs the secret scan, and exits before touching git.
+
+### Added
+- Plugin icon (`assets/icon.svg`), referenced from `plugin.json`.
+
+### Changed
+- Removed the git submodules for BATS and its unused helper libraries. The plugin now ships only readable source; contributors and CI clone `bats-core` v1.13.0 into `tests/bats/`.
+- README links to GitHub's official `gh` install instructions for Linux instead of inlining the download commands.
 
 ### Tests
 - Added `dry-run leaves the repo working tree untouched` and `dry-run reports unchanged items after a real push` to `tests/integration/sync_push.bats`.
+- Added `auto mode does not push when auto_push is off` and `auto mode pushes when auto_push is enabled`.
 
 ## [0.2.1] - 2026-04-12
 
