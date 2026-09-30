@@ -57,41 +57,49 @@ copy_if_exists() {
   local dest="$2"
   local label="$3"
 
-  if [[ -e "$src" ]]; then
-    # Secret scan for files (not directories)
-    if [[ -f "$src" ]]; then
-      if ! scan_for_secrets "$src"; then
-        SECRET_WARNINGS=$((SECRET_WARNINGS + 1))
-        if ! $FORCE; then
-          warn "Skipping $label (potential secret). Use --force to override."
-          return
-        else
-          warn "Force-pushing $label despite secret warning."
-        fi
-      fi
-    fi
+  if [[ ! -e "$src" ]]; then return; fi
 
-    # Create destination directory
-    mkdir -p "$(dirname "$dest")"
-
-    if [[ -d "$src" ]]; then
-      # Directory: rsync or cp -r
-      if command -v rsync &>/dev/null; then
-        rsync -a --delete "$src/" "$dest/" 2>/dev/null
+  # Secret scan for files (not directories)
+  if [[ -f "$src" ]]; then
+    if ! scan_for_secrets "$src"; then
+      SECRET_WARNINGS=$((SECRET_WARNINGS + 1))
+      if ! $FORCE; then
+        warn "Skipping $label (potential secret). Use --force to override."
+        return
       else
-        rm -rf "$dest"
-        cp -r "$src" "$dest"
+        warn "Force-pushing $label despite secret warning."
       fi
-    else
-      cp "$src" "$dest"
-    fi
-
-    if $DRY_RUN; then
-      info "[dry-run] Would sync: $label"
-    else
-      CHANGED=$((CHANGED + 1))
     fi
   fi
+
+  # Dry run: report what would change without touching the working tree.
+  # Copying here would leave files behind that the next real push commits.
+  if $DRY_RUN; then
+    if [[ -e "$dest" ]] && diff -rq "$src" "$dest" >/dev/null 2>&1; then
+      info "[dry-run] Unchanged: $label"
+    else
+      info "[dry-run] Would sync: $label"
+      CHANGED=$((CHANGED + 1))
+    fi
+    return
+  fi
+
+  # Create destination directory
+  mkdir -p "$(dirname "$dest")"
+
+  if [[ -d "$src" ]]; then
+    # Directory: rsync or cp -r
+    if command -v rsync &>/dev/null; then
+      rsync -a --delete "$src/" "$dest/" 2>/dev/null
+    else
+      rm -rf "$dest"
+      cp -r "$src" "$dest"
+    fi
+  else
+    cp "$src" "$dest"
+  fi
+
+  CHANGED=$((CHANGED + 1))
 }
 
 # Project-scoped files
@@ -166,17 +174,24 @@ if [[ -f "${PROJECT_DIR}/skills-lock.json" ]] && [[ "$(get_state "sync_agent_ski
   fi
 fi
 
+# ── Dry run: report and stop before touching git ───────────────────
+if $DRY_RUN; then
+  if [[ $SECRET_WARNINGS -gt 0 ]]; then
+    warn "${SECRET_WARNINGS} file(s) had potential secret warnings."
+  fi
+  if [[ $CHANGED -eq 0 ]]; then
+    ok "Dry run complete. Nothing would change. Working tree untouched."
+  else
+    info "Dry run complete. ${CHANGED} item(s) would be synced. Working tree untouched."
+  fi
+  exit 0
+fi
+
 # ── Check for actual changes ────────────────────────────────────────
 cd "$REPO_PATH"
 
 if [[ -z "$(git status --porcelain)" ]]; then
   ok "No changes to push. Everything is in sync."
-  exit 0
-fi
-
-if $DRY_RUN; then
-  info "Dry run complete. Changes that would be pushed:"
-  git status --short
   exit 0
 fi
 
