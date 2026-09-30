@@ -86,6 +86,31 @@ teardown() {
   [ "$count" -eq 1 ]  # Only the init commit
 }
 
+@test "dry-run leaves the repo working tree untouched" {
+  run bash "${SCRIPTS_DIR}/sync-push.sh" --dry-run
+  [ "$status" -eq 0 ]
+  [[ "$output" == *"Would sync"* ]]
+
+  # Nothing may be copied, staged or left untracked in the local repo,
+  # otherwise the next real push (to any profile) would commit the leftovers.
+  cd "${CLAUDE_PLUGIN_DATA}/repo"
+  [ -z "$(git status --porcelain)" ]
+  [ ! -e "profiles/default/settings.json" ]
+  [ ! -e "profiles/default/mcp.json" ]
+  [ ! -e "profiles/default/skills/my-skill.md" ]
+}
+
+@test "dry-run reports unchanged items after a real push" {
+  run bash "${SCRIPTS_DIR}/sync-push.sh"
+  [ "$status" -eq 0 ]
+
+  run bash "${SCRIPTS_DIR}/sync-push.sh" --dry-run
+  [ "$status" -eq 0 ]
+  [[ "$output" == *"Unchanged"* ]]
+  [[ "$output" != *"Would sync"* ]]
+  [[ "$output" == *"Nothing would change"* ]]
+}
+
 @test "exits when not set up" {
   rm -f "${CLAUDE_PLUGIN_DATA}/state.json"
   echo '{}' > "${CLAUDE_PLUGIN_DATA}/state.json"
