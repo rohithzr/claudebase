@@ -32,3 +32,6 @@ node_modules/
 .agents/skills/security-review/
 .claude/agents/security-review.md
 .agents/skills/git-commit/
+
+# Test runner (clone locally, see CONTRIBUTING.md)
+tests/bats/
