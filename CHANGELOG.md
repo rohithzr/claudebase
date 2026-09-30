@@ -2,6 +2,11 @@
 
 All notable changes to Claudebase will be documented in this file.
 
+## [0.2.3] - 2026-09-30
+
+### Changed
+- Each skill's `allowed-tools` now pre-approves only the plugin scripts that skill runs (for example `Bash(bash ${CLAUDE_PLUGIN_ROOT}/scripts/sync-push.sh *)`). Removed the broad `Bash(gh *)`, `Bash(git *)` and `scripts/*` wildcard entries, and the unused `Write` from `sync-setup`. Skill bodies invoke the scripts in the same form so the rules match.
+
 ## [0.2.2] - 2026-09-30
 
 ### Fixed
