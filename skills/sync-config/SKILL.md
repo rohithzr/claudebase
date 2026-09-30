@@ -3,8 +3,8 @@ name: sync-config
 description: Use when the user wants to view or change claudebase settings like global sync, agent skills sync, auto-push, or machine ID.
 argument-hint: "[show] | [set <key> <value>] | [get <key>] | [reset <key>]"
 user-invocable: true
-allowed-tools: Bash(bash "${CLAUDE_PLUGIN_ROOT}/scripts/*"), Read
-version: 0.2.2
+allowed-tools: Bash(bash ${CLAUDE_PLUGIN_ROOT}/scripts/config-manager.sh *), Read
+version: 0.2.3
 author: Rohit Hazra
 license: MIT
 ---
@@ -18,7 +18,7 @@ View and modify claudebase configuration.
 Run the config manager script with the appropriate action:
 
 ```bash
-bash "${CLAUDE_PLUGIN_ROOT}/scripts/config-manager.sh" ACTION [KEY] [VALUE]
+bash ${CLAUDE_PLUGIN_ROOT}/scripts/config-manager.sh ACTION [KEY] [VALUE]
 ```
 
 ### Actions

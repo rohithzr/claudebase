@@ -3,8 +3,8 @@ name: sync-push
 description: Use when the user wants to back up, save, or push their current Claude Code config to GitHub.
 argument-hint: "[--profile NAME] [--force] [--dry-run] [--include-global]"
 user-invocable: true
-allowed-tools: Bash(bash "${CLAUDE_PLUGIN_ROOT}/scripts/*"), Bash(gh *), Bash(git *), Read
-version: 0.2.2
+allowed-tools: Bash(bash ${CLAUDE_PLUGIN_ROOT}/scripts/sync-push.sh *), Read
+version: 0.2.3
 author: Rohit Hazra
 license: MIT
 ---
@@ -30,7 +30,7 @@ Files that are **never** pushed: `CLAUDE.md` (version-controlled with project), 
 Parse user arguments and run the push script:
 
 ```bash
-bash "${CLAUDE_PLUGIN_ROOT}/scripts/sync-push.sh" [OPTIONS]
+bash ${CLAUDE_PLUGIN_ROOT}/scripts/sync-push.sh [OPTIONS]
 ```
 
 **Options:**

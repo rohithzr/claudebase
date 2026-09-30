@@ -3,8 +3,8 @@ name: sync-setup
 description: Use when the user wants to set up config sync for the first time, connect to GitHub, or re-initialize the backup repo.
 argument-hint: "[repo-name] [profile-name]"
 user-invocable: true
-allowed-tools: Bash(bash "${CLAUDE_PLUGIN_ROOT}/scripts/*"), Bash(gh *), Bash(git *), Read, Write
-version: 0.2.2
+allowed-tools: Bash(bash ${CLAUDE_PLUGIN_ROOT}/scripts/ensure-repo.sh *), Bash(bash ${CLAUDE_PLUGIN_ROOT}/scripts/sync-push.sh *), Read
+version: 0.2.3
 author: Rohit Hazra
 license: MIT
 ---
@@ -28,7 +28,7 @@ Run the setup script. Parse user arguments for custom repo name and profile:
 - Second argument (if provided): initial profile name (default: `default`)
 
 ```bash
-bash "${CLAUDE_PLUGIN_ROOT}/scripts/ensure-repo.sh" REPO_NAME PROFILE_NAME
+bash ${CLAUDE_PLUGIN_ROOT}/scripts/ensure-repo.sh REPO_NAME PROFILE_NAME
 ```
 
 Replace REPO_NAME and PROFILE_NAME with the user's values or defaults.
@@ -47,7 +47,7 @@ Then authenticate: `gh auth login`
 Run the first push automatically:
 
 ```bash
-bash "${CLAUDE_PLUGIN_ROOT}/scripts/sync-push.sh" --profile PROFILE_NAME
+bash ${CLAUDE_PLUGIN_ROOT}/scripts/sync-push.sh --profile PROFILE_NAME
 ```
 
 Tell the user what was synced and show all available commands: `/sync-push`, `/sync-pull`, `/sync-status`, `/sync-profiles`, `/sync-config`.
