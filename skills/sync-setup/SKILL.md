@@ -4,7 +4,7 @@ description: Use when the user wants to set up config sync for the first time, c
 argument-hint: "[repo-name] [profile-name]"
 user-invocable: true
 allowed-tools: Bash(bash ${CLAUDE_PLUGIN_ROOT}/scripts/ensure-repo.sh *), Bash(bash ${CLAUDE_PLUGIN_ROOT}/scripts/sync-push.sh *), Read
-version: 0.2.3
+version: 0.2.4
 author: Rohit Hazra
 license: MIT
 ---

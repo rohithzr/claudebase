@@ -2,6 +2,11 @@
 
 All notable changes to Claudebase will be documented in this file.
 
+## [0.2.4] - 2026-09-30
+
+### Changed
+- New listing icon: stacked profile layers with the top layer pushing up (`assets/icon.svg`).
+
 ## [0.2.3] - 2026-09-30
 
 ### Changed

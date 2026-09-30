@@ -4,7 +4,7 @@ description: Use when the user wants to back up, save, or push their current Cla
 argument-hint: "[--profile NAME] [--force] [--dry-run] [--include-global]"
 user-invocable: true
 allowed-tools: Bash(bash ${CLAUDE_PLUGIN_ROOT}/scripts/sync-push.sh *), Read
-version: 0.2.3
+version: 0.2.4
 author: Rohit Hazra
 license: MIT
 ---

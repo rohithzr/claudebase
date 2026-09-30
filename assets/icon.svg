@@ -1,13 +1,13 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
-  <rect width="512" height="512" rx="112" fill="#1f2937"/>
-  <g fill="none" stroke="#f5f0e6" stroke-width="24" stroke-linecap="round" stroke-linejoin="round">
-    <ellipse cx="220" cy="150" rx="112" ry="38"/>
-    <path d="M108 150v212c0 21 50 38 112 38"/>
-    <path d="M332 150v84"/>
-    <path d="M108 256c0 21 50 38 112 38"/>
-  </g>
-  <g fill="none" stroke="#d97757" stroke-width="24" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M428 330a82 82 0 1 1-24-58"/>
-    <path d="M410 232v44h-44"/>
-  </g>
+<defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a2622"/><stop offset="1" stop-color="#171412"/></linearGradient>
+  <linearGradient id="acc" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e8896a"/><stop offset="1" stop-color="#c4613f"/></linearGradient>
+</defs>
+<rect width="512" height="512" rx="112" fill="url(#bg)"/>
+<path d="M256 270 L406 340 L256 410 L106 340 Z" fill="#5b524a"/>
+<path d="M256 210 L406 280 L256 350 L106 280 Z" fill="#8a7f73" stroke="#171412" stroke-width="10" stroke-linejoin="round"/>
+<path d="M256 150 L406 220 L256 290 L106 220 Z" fill="url(#acc)" stroke="#171412" stroke-width="10" stroke-linejoin="round"/>
+<g fill="none" stroke="#fff" stroke-width="22" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M256 250V178"/><path d="M222 208l34-34 34 34"/>
+</g>
 </svg>
