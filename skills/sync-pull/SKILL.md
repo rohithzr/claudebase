@@ -4,7 +4,7 @@ description: Use when the user wants to restore, download, or pull their Claude 
 argument-hint: "[--profile NAME] [--dry-run] [--no-backup] [--yes] [--include-global]"
 user-invocable: true
 allowed-tools: Bash(bash "${CLAUDE_PLUGIN_ROOT}/scripts/*"), Bash(gh *), Bash(git *), Read
-version: 0.2.0
+version: 0.2.2
 author: Rohit Hazra
 license: MIT
 ---

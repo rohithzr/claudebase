@@ -4,7 +4,7 @@ description: Use when the user wants to list, create, switch, delete, compare, o
 argument-hint: "<list|create|switch|delete|diff|info> [name] [--from existing]"
 user-invocable: true
 allowed-tools: Bash(bash "${CLAUDE_PLUGIN_ROOT}/scripts/*"), Bash(gh *), Bash(git *), Read
-version: 0.2.0
+version: 0.2.2
 author: Rohit Hazra
 license: MIT
 ---
