@@ -4,7 +4,7 @@ description: Use when the user wants to restore, download, or pull their Claude 
 argument-hint: "[--profile NAME] [--dry-run] [--no-backup] [--yes] [--include-global]"
 user-invocable: true
 allowed-tools: Bash(bash ${CLAUDE_PLUGIN_ROOT}/scripts/sync-pull.sh *), Read
-version: 0.2.5
+version: 0.2.6
 author: Rohit Hazra
 license: MIT
 compatibility: Requires Claude Code with Claudebase installed, Bash, jq, Git, and GitHub CLI.

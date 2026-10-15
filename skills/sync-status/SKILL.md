@@ -3,7 +3,7 @@ name: sync-status
 description: Use when the user wants to check what config has changed, see sync status, or compare local vs remote config. Trigger with /sync-status.
 user-invocable: true
 allowed-tools: Bash(bash ${CLAUDE_PLUGIN_ROOT}/scripts/diff-config.sh *), Read
-version: 0.2.5
+version: 0.2.6
 author: Rohit Hazra
 license: MIT
 compatibility: Requires Claude Code with Claudebase installed, Bash, jq, Git, and GitHub CLI.
