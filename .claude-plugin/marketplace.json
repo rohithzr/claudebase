@@ -8,10 +8,18 @@
   "plugins": [
     {
       "name": "claudebase",
+      "displayName": "Claudebase",
       "description": "Back up and restore your entire Claude Code environment to a private GitHub repo",
+      "author": {
+        "name": "Rohit Hazra",
+        "url": "https://github.com/rohithzr"
+      },
       "category": "productivity",
+      "keywords": ["backup", "restore", "sync", "github", "config", "settings", "profiles", "dotfiles", "migration", "productivity"],
       "source": "./",
-      "homepage": "https://github.com/rohithzr/claudebase"
+      "homepage": "https://github.com/rohithzr/claudebase",
+      "repository": "https://github.com/rohithzr/claudebase",
+      "license": "MIT"
     }
   ]
 }

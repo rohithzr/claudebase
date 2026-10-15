@@ -2,6 +2,13 @@
 
 All notable changes to Claudebase will be documented in this file.
 
+## [0.2.5] - 2026-10-15
+
+### Changed
+- Listing icon is now a 512x512 PNG (`assets/icon.png`, rendered from `assets/icon.svg`); `plugin.json` points `icon` at it.
+- `plugin.json` adds `displayName`, `documentationUrl`, `supportUrl` and `privacyPolicyUrl`, and a broader `keywords` list for directory discovery.
+- The marketplace entry now carries `displayName`, `author`, `keywords`, `repository` and `license`, matching `plugin.json`.
+
 ## [0.2.4] - 2026-09-30
 
 ### Changed
