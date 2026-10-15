@@ -1,7 +1,8 @@
 {
   "name": "claudebase",
+  "displayName": "Claudebase",
   "description": "Back up and restore your entire Claude Code environment to a private GitHub repo",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "author": {
     "name": "Rohit Hazra",
     "url": "https://github.com/rohithzr"
@@ -9,6 +10,9 @@
   "homepage": "https://github.com/rohithzr/claudebase",
   "repository": "https://github.com/rohithzr/claudebase",
   "license": "MIT",
-  "icon": "./assets/icon.svg",
-  "keywords": ["github", "sync", "backup", "config", "profiles", "settings"]
+  "icon": "./assets/icon.png",
+  "documentationUrl": "https://github.com/rohithzr/claudebase#readme",
+  "supportUrl": "https://github.com/rohithzr/claudebase/issues",
+  "privacyPolicyUrl": "https://github.com/rohithzr/claudebase/blob/main/PRIVACY.md",
+  "keywords": ["backup", "restore", "sync", "github", "config", "settings", "profiles", "dotfiles", "migration", "productivity"]
 }
