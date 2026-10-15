@@ -1,17 +1,25 @@
 ---
 name: sync-pull
-description: Use when the user wants to restore, download, or pull their Claude Code config from GitHub onto this machine.
+description: Use when the user wants to restore, download, or pull their Claude Code config from GitHub onto this machine. Trigger with /sync-pull.
 argument-hint: "[--profile NAME] [--dry-run] [--no-backup] [--yes] [--include-global]"
 user-invocable: true
 allowed-tools: Bash(bash ${CLAUDE_PLUGIN_ROOT}/scripts/sync-pull.sh *), Read
-version: 0.2.5
+version: 0.2.6
 author: Rohit Hazra
 license: MIT
+compatibility: Requires Claude Code with Claudebase installed, Bash, jq, Git, and GitHub CLI.
+tags: [claude-code, github, backup, configuration, sync-pull]
 ---
 
 # Config Sync Pull
 
-Pull configuration from your GitHub backup repo and apply it to the local machine.
+## Overview
+
+Restore saved Claude Code configuration from a private GitHub backup repository. Use this skill when moving to another machine or applying a saved profile. Shared configuration is applied first, followed by the selected profile and any enabled global settings.
+
+## Prerequisites
+
+Claudebase setup must be complete. Bash, jq, Git, and authenticated GitHub CLI access to the backup repository are required. Confirm the target profile and local destination. You can also preview the operation with `--dry-run` before applying changes.
 
 ## What happens
 
@@ -22,6 +30,9 @@ Pull configuration from your GitHub backup repo and apply it to the local machin
 5. **Verify** — JSON config files are validated for correct syntax
 
 ## Instructions
+
+1. Parse the requested arguments and select the appropriate options below.
+2. Run the documented script and check its result.
 
 Parse user arguments and run the pull script:
 
@@ -48,6 +59,29 @@ Tell the user:
 - That a backup was created (and where)
 - They may need to restart Claude Code for some settings to take effect
 
+## Output
+
+Report the selected profile, applied file count, JSON validation warnings, and backup location from the script output. A dry run reports planned changes rather than completed restoration. Explain that a restart may be required for loaded Claude Code settings to take effect.
+
+## Error Handling
+
+Troubleshoot missing profiles and authentication failures before retrying. If JSON validation reports malformed configuration, identify the affected file and report the warning. Preserve the normal backup and confirmation steps unless the user explicitly requested the corresponding bypass options.
+
+## Examples
+
+```text
+/sync-pull --dry-run
+/sync-pull --profile work
+```
+
+## Resources
+
+- Read [the README](https://github.com/rohithzr/claudebase#readme) for installation, shared layers, and supported configuration paths.
+- Read [the privacy policy](https://github.com/rohithzr/claudebase/blob/main/PRIVACY.md) for backup storage and credential handling.
+- Read [the changelog](https://github.com/rohithzr/claudebase/blob/main/CHANGELOG.md) for changes affecting installed versions.
+
 ## User Arguments
+
+Interpret the following input as arguments for the documented operation:
 
 $ARGUMENTS

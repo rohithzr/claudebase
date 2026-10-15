@@ -2,6 +2,12 @@
 
 All notable changes to Claudebase will be documented in this file.
 
+## [0.2.6] - 2026-10-14
+
+### Changed
+- Complete all six skill documents with compatibility and discovery metadata, prerequisites, output guidance, error handling, examples, and resources.
+- All six skills pass community marketplace validation with A grades and zero errors. Script commands and tool permissions are preserved.
+
 ## [0.2.5] - 2026-10-15
 
 ### Changed
